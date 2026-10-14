@@ -1,0 +1,134 @@
+---
+// Pie de página: marca, enlaces y redes. Solo muestra redes con URL confirmada en site.ts.
+import { site } from '../../data/site';
+import { mainNav } from '../../data/navigation';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+const year = new Date().getFullYear();
+
+const socialLinks = [
+  { label: 'GitHub', href: site.contact.github },
+  { label: 'LinkedIn', href: site.contact.linkedin },
+].filter((link): link is { label: string; href: string } => Boolean(link.href));
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="/" aria-label={t('nav.home')}>
+        BS<span class="site-footer__accent">dev</span>
+      </a>
+      <p>{t('footer.tagline')}</p>
+      <p class="site-footer__meta">{site.location.region}, {site.location.country}</p>
+    </div>
+
+    <nav aria-label={t('footer.links')}>
+      <p class="site-footer__heading">{t('footer.links')}</p>
+      <ul role="list">
+        {
+          mainNav.map(({ label, href }) => (
+            <li>
+              <a href={href}>{t(label)}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    {
+      socialLinks.length > 0 && (
+        <div>
+          <p class="site-footer__heading">{t('footer.social')}</p>
+          <ul role="list">
+            {socialLinks.map(({ label, href }) => (
+              <li>
+                <a href={href} target="_blank" rel="noopener noreferrer">
+                  {label}
+                  <span class="sr-only"> {t('a11y.newTab')}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="container site-footer__bottom">
+    <p>© {year} {site.name}. {t('footer.rights')}</p>
+    <p>{t('footer.builtWith')}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-section);
+    padding-block: var(--space-2xl) var(--space-l);
+    border-top: var(--border-width) solid var(--color-border);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  }
+
+  .site-footer__brand {
+    display: grid;
+    gap: var(--space-xs);
+    align-content: start;
+  }
+
+  .site-footer__logo {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    font-weight: 800;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-footer__accent {
+    color: var(--color-accent);
+  }
+
+  .site-footer__meta {
+    color: var(--color-text-subtle);
+  }
+
+  .site-footer__heading {
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  ul {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  ul a {
+    text-decoration: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    ul a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-m);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-m);
+    border-top: var(--border-width) solid var(--color-border);
+    color: var(--color-text-subtle);
+  }
+</style>

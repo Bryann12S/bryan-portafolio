@@ -1,0 +1,242 @@
+---
+// Cabecera fija con logo y navegación principal.
+// Móvil: el menú se pliega tras un botón. Sin JavaScript, los enlaces se muestran siempre.
+import Icon from '../ui/Icon.astro';
+import { mainNav } from '../../data/navigation';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="logo" href="/" aria-label={t('nav.home')}>
+      BS<span class="logo__accent">dev</span>
+    </a>
+
+    <nav class="site-nav" aria-label={t('nav.label')} data-site-nav>
+      <button
+        class="site-nav__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav-list"
+        hidden
+        data-nav-toggle
+        data-label-open={t('nav.openMenu')}
+        data-label-close={t('nav.closeMenu')}
+      >
+        <Icon name="menu" size={22} class="site-nav__icon site-nav__icon--open" />
+        <Icon name="close" size={22} class="site-nav__icon site-nav__icon--close" />
+        <span class="sr-only" data-nav-toggle-label>{t('nav.openMenu')}</span>
+      </button>
+
+      <ul class="site-nav__list" id="site-nav-list" role="list">
+        {
+          mainNav.map(({ label, href }) => (
+            <li>
+              <a
+                class:list={['site-nav__link', { 'site-nav__link--cta': label === 'nav.contact' }]}
+                href={href}
+              >
+                {t(label)}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mejora progresiva del menú móvil: abrir/cerrar, Escape, clic en enlace y cambio a escritorio.
+  const nav = document.querySelector<HTMLElement>('[data-site-nav]');
+  const toggle = nav?.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const toggleLabel = toggle?.querySelector<HTMLElement>('[data-nav-toggle-label]');
+  const desktop = window.matchMedia('(min-width: 48rem)');
+
+  if (nav && toggle && toggleLabel) {
+    const setOpen = (open: boolean) => {
+      nav.dataset.open = String(open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggleLabel.textContent = (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? '';
+    };
+
+    toggle.hidden = false;
+    nav.dataset.enhanced = '';
+    setOpen(false);
+
+    toggle.addEventListener('click', () => setOpen(nav.dataset.open !== 'true'));
+
+    nav.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && nav.dataset.open === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    desktop.addEventListener('change', () => setOpen(false));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background-color: var(--color-bg);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+    min-height: var(--header-height);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 800;
+    letter-spacing: var(--tracking-heading);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .logo__accent {
+    color: var(--color-accent);
+  }
+
+  .site-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3xs) var(--space-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav__link {
+    display: inline-block;
+    padding-block: var(--space-2xs);
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .site-nav__link--cta {
+    padding-inline: var(--space-s);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .site-nav__link:hover {
+      color: var(--color-text);
+    }
+
+    .site-nav__link--cta:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+  }
+
+  .site-nav__toggle {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    background: none;
+  }
+
+  .site-nav__toggle[hidden] {
+    display: none;
+  }
+
+  /* Los SVG vienen del componente Icon: sus clases necesitan :global() */
+  .site-nav__toggle :global(.site-nav__icon) {
+    grid-area: 1 / 1;
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .site-nav__toggle :global(.site-nav__icon--close),
+  [data-open='true'] .site-nav__toggle :global(.site-nav__icon--open) {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.8);
+  }
+
+  [data-open='true'] .site-nav__toggle :global(.site-nav__icon--close) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Móvil con JavaScript: el menú se despliega bajo la cabecera */
+  @media (max-width: 47.99rem) {
+    [data-enhanced] .site-nav__list {
+      position: absolute;
+      inset: 100% 0 auto;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-2xs) var(--gutter) var(--space-m);
+      background-color: var(--color-bg);
+      border-bottom: var(--border-width) solid var(--color-border);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-0.5rem);
+      transition:
+        opacity var(--duration-base) var(--ease-out),
+        transform var(--duration-base) var(--ease-out),
+        visibility 0s linear var(--duration-base);
+    }
+
+    [data-enhanced][data-open='true'] .site-nav__list {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity var(--duration-base) var(--ease-out),
+        transform var(--duration-base) var(--ease-out);
+    }
+
+    [data-enhanced] .site-nav__link {
+      display: block;
+      padding-block: var(--space-xs);
+      font-size: var(--text-lead);
+      color: var(--color-text);
+      border-bottom: var(--border-width) solid var(--color-border);
+    }
+
+    [data-enhanced] .site-nav__link--cta {
+      margin-top: var(--space-s);
+      padding-inline: var(--space-m);
+      border: none;
+      background-color: var(--color-accent);
+      color: var(--color-on-accent);
+      text-align: center;
+      font-weight: 600;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .site-nav__toggle {
+      display: none;
+    }
+  }
+</style>

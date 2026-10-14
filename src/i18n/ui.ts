@@ -6,6 +6,25 @@ export const defaultLang = 'es';
 export const ui = {
   es: {
     'layout.skipLink': 'Saltar al contenido',
+    'a11y.newTab': '(se abre en una pestaña nueva)',
+
+    'nav.label': 'Navegación principal',
+    'nav.home': 'BSdev, ir al inicio',
+    'nav.projects': 'Proyectos',
+    'nav.about': 'Sobre mí',
+    'nav.services': 'Servicios',
+    'nav.contact': 'Contacto',
+    'nav.openMenu': 'Abrir menú',
+    'nav.closeMenu': 'Cerrar menú',
+
+    'footer.tagline': 'Desarrollo fullstack y páginas web para negocios.',
+    'footer.links': 'Enlaces',
+    'footer.social': 'Redes',
+    'footer.rights': 'Todos los derechos reservados.',
+    'footer.builtWith': 'Hecho con Astro.',
+
+    'whatsapp.label': 'Escribir por WhatsApp',
+    'whatsapp.message': 'Hola Bryan, vi tu portafolio y me gustaría conversar contigo.',
   },
 } as const;
 
