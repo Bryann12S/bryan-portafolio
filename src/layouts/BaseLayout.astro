@@ -1,0 +1,42 @@
+---
+// Layout compartido: <head> con fuentes y SEO, enlace para saltar al contenido y <main>.
+// El header, el footer y el botón de WhatsApp se añaden en la etapa 3.
+import { Font } from 'astro:assets';
+import SEO from '../components/layout/SEO.astro';
+import { site } from '../data/site';
+import { getLang, useTranslations } from '../i18n/ui';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <Font cssVariable="--font-display" preload={[{ weight: 800 }]} />
+    <Font cssVariable="--font-body" preload={[{ weight: 400 }]} />
+    <Font cssVariable="--font-mono" />
+
+    <SEO {...Astro.props} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">{t('layout.skipLink')}</a>
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+  </body>
+</html>

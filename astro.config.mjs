@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
@@ -14,6 +14,35 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+
+  // Astro descarga las fuentes de Google en el build y las sirve desde el propio sitio.
+  // Solo se incluyen los pesos y estilos que usa el diseño.
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Syne',
+      cssVariable: '--font-display',
+      weights: [700, 800],
+      styles: ['normal'],
+      fallbacks: ['sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Inter',
+      cssVariable: '--font-body',
+      weights: [400, 500, 600],
+      styles: ['normal'],
+      fallbacks: ['sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'JetBrains Mono',
+      cssVariable: '--font-mono',
+      weights: [400, 500],
+      styles: ['normal'],
+      fallbacks: ['monospace'],
+    },
+  ],
 
   integrations: [
     sitemap({

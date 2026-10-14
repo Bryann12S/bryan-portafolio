@@ -1,0 +1,19 @@
+# Finales de línea LF en todo el repositorio (evita conflictos Windows/macOS/Linux
+# y mantiene ejecutables los scripts de shell, como el hook de Impeccable).
+* text=auto eol=lf
+
+# Scripts de Windows con CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.exe binary
