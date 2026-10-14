@@ -1,0 +1,144 @@
+---
+// Fila editorial de un proyecto para listados: etiquetas y periodo, título, resumen y stack.
+// Toda la fila es clicable a través del enlace del título (patrón de "enlace estirado").
+import Icon from './Icon.astro';
+import ProjectTags from './ProjectTags.astro';
+import { formatPeriod, getProjectUrl, type Project } from '../../lib/projects';
+import { getLang } from '../../i18n/ui';
+
+interface Props {
+  project: Project;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, headingLevel: Heading = 'h3' } = Astro.props;
+const { title, summary, stack, period, kind } = project.data;
+const lang = getLang(Astro.currentLocale);
+const periodLabel = formatPeriod(period, lang);
+---
+
+<article class="project-row" data-kind={kind}>
+  <div class="project-row__meta">
+    <ProjectTags project={project} />
+    {periodLabel && <span class="project-row__period">{periodLabel}</span>}
+  </div>
+
+  <div class="project-row__body">
+    <Heading class="project-row__title">
+      <a href={getProjectUrl(project)}>{title}</a>
+    </Heading>
+    <p class="project-row__summary">{summary}</p>
+  </div>
+
+  <ul class="project-row__stack" role="list">
+    {stack.map((tech) => <li>{tech}</li>)}
+  </ul>
+
+  <span class="project-row__arrow"><Icon name="arrow-right" size={28} /></span>
+</article>
+
+<style>
+  .project-row {
+    position: relative;
+    display: grid;
+    gap: var(--space-s);
+    padding-block: var(--space-l);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .project-row__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-s);
+  }
+
+  .project-row__period {
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+  }
+
+  .project-row__title {
+    font-size: var(--text-h3);
+  }
+
+  .project-row__title a {
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  /* El enlace del título cubre toda la fila */
+  .project-row__title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .project-row__title a:focus-visible {
+    outline: none;
+  }
+
+  .project-row:has(a:focus-visible) {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+    border-radius: var(--radius-s);
+  }
+
+  .project-row__summary {
+    margin-top: var(--space-2xs);
+    color: var(--color-text-muted);
+  }
+
+  .project-row__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-s);
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    color: var(--color-text-subtle);
+  }
+
+  .project-row__arrow {
+    display: none;
+  }
+
+  @media (min-width: 56rem) {
+    .project-row {
+      grid-template-columns: 13rem minmax(0, 1fr) 12rem 2rem;
+      align-items: start;
+      gap: var(--space-l);
+    }
+
+    .project-row__meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .project-row__stack {
+      flex-direction: column;
+      padding-top: 0.4rem;
+    }
+
+    .project-row__arrow {
+      display: block;
+      padding-top: 0.35rem;
+      color: var(--color-text-subtle);
+      transition:
+        transform var(--duration-base) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-row:hover .project-row__title a {
+      color: var(--color-accent);
+    }
+
+    .project-row:hover .project-row__arrow {
+      color: var(--color-accent);
+      transform: translateX(4px);
+    }
+  }
+</style>

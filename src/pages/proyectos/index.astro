@@ -1,0 +1,118 @@
+---
+// Listado completo de proyectos con filtro Todos / Reales / Demos.
+// El filtro funciona solo con CSS (radios + :has()): no depende de JavaScript.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectRow from '../../components/ui/ProjectRow.astro';
+import { getProjects } from '../../lib/projects';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+
+const filters = [
+  { value: 'all', label: t('projects.filter.all') },
+  { value: 'real', label: t('projects.filter.real') },
+  { value: 'demo', label: t('projects.filter.demo') },
+] as const;
+---
+
+<BaseLayout title={t('projects.title')} description={t('projects.intro')}>
+  <div class="container listing">
+    <header class="listing__header">
+      <h1>{t('projects.title')}</h1>
+      <p class="listing__intro">{t('projects.intro')}</p>
+    </header>
+
+    <fieldset class="filter">
+      <legend class="sr-only">{t('projects.filter')}</legend>
+      {
+        filters.map(({ value, label }) => (
+          <label class="filter__option">
+            <input
+              class="sr-only"
+              type="radio"
+              name="project-filter"
+              value={value}
+              checked={value === 'all'}
+            />
+            <span>{label}</span>
+          </label>
+        ))
+      }
+    </fieldset>
+
+    <div class="listing__list">
+      {projects.map((project) => <ProjectRow project={project} headingLevel="h2" />)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .listing {
+    padding-block: var(--space-section);
+  }
+
+  .listing__header {
+    display: grid;
+    gap: var(--space-s);
+    margin-bottom: var(--space-xl);
+  }
+
+  .listing__intro {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin: 0 0 var(--space-l);
+    padding: 0;
+    border: none;
+  }
+
+  .filter__option span {
+    display: inline-block;
+    padding: var(--space-2xs) var(--space-s);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .filter__option:has(:checked) span {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .filter__option:has(:focus-visible) span {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .filter__option:not(:has(:checked)):hover span {
+      border-color: var(--color-text-muted);
+      color: var(--color-text);
+    }
+  }
+
+  .listing__list {
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  /* Filtrado: "Demos" muestra demos; "Reales" muestra trabajo real y proyectos personales */
+  .listing:has(input[value='real']:checked) .listing__list :global([data-kind='demo']),
+  .listing:has(input[value='demo']:checked) .listing__list :global(:is([data-kind='real'], [data-kind='personal'])) {
+    display: none;
+  }
+</style>

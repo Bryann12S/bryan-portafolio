@@ -1,0 +1,82 @@
+---
+// Sección "Proyectos" de la portada: proyectos destacados y enlace al listado completo.
+import ProjectRow from '../ui/ProjectRow.astro';
+import Icon from '../ui/Icon.astro';
+import { getFeaturedProjects } from '../../lib/projects';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+const projects = await getFeaturedProjects(lang);
+---
+
+<section class="projects container" id="proyectos" aria-labelledby="projects-title">
+  <header class="projects__header">
+    <h2 id="projects-title">{t('projects.title')}</h2>
+    <p class="projects__intro">{t('projects.intro')}</p>
+  </header>
+
+  <div class="projects__list">
+    {projects.map((project) => <ProjectRow project={project} />)}
+  </div>
+
+  <a class="projects__all" href="/proyectos">
+    {t('projects.viewAll')}
+    <Icon name="arrow-right" size={18} />
+  </a>
+</section>
+
+<style>
+  .projects {
+    padding-block: var(--space-section);
+  }
+
+  .projects__header {
+    display: grid;
+    gap: var(--space-s);
+    margin-bottom: var(--space-xl);
+  }
+
+  .projects__intro {
+    color: var(--color-text-muted);
+    font-size: var(--text-lead);
+  }
+
+  /* Composición asimétrica: título a la izquierda, introducción desplazada a la derecha */
+  @media (min-width: 56rem) {
+    .projects__header {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: end;
+      gap: var(--space-xl);
+    }
+
+    .projects__intro {
+      justify-self: end;
+      max-width: 34rem;
+    }
+  }
+
+  .projects__list {
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .projects__all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-top: var(--space-l);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-accent);
+  }
+
+  .projects__all :global(svg) {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .projects__all:hover :global(svg) {
+      transform: translateX(4px);
+    }
+  }
+</style>

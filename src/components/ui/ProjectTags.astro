@@ -1,0 +1,26 @@
+---
+// Tipo y estado de un proyecto, siempre visibles para que nadie confunda una demo con trabajo real.
+import Tag from './Tag.astro';
+import type { Project } from '../../lib/projects';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+interface Props {
+  project: Project;
+}
+
+const { kind, status } = Astro.props.project.data;
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<span class="project-tags">
+  <Tag variant={kind === 'real' ? 'accent' : 'neutral'}>{t(`projects.kind.${kind}`)}</Tag>
+  {status && <Tag variant="muted">{t(`projects.status.${status}`)}</Tag>}
+</span>
+
+<style>
+  .project-tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+</style>

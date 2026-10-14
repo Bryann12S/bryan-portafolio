@@ -1,0 +1,37 @@
+---
+// Etiqueta pequeña para tipo y estado de un proyecto.
+// "accent" se reserva para lo que debe distinguirse a primera vista (proyectos reales).
+interface Props {
+  variant?: 'accent' | 'neutral' | 'muted';
+}
+
+const { variant = 'neutral' } = Astro.props;
+---
+
+<span class:list={['tag', `tag--${variant}`]}><slot /></span>
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2em 0.65em;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    color: var(--color-text);
+  }
+
+  .tag--accent {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .tag--muted {
+    border-style: dashed;
+    color: var(--color-text-muted);
+  }
+</style>

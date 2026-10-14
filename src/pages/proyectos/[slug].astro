@@ -1,0 +1,235 @@
+---
+// Caso de estudio de un proyecto. Se genera una página estática por archivo de la colección.
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectTags from '../../components/ui/ProjectTags.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { formatPeriod, getProjects, getProjectSlug, type Project } from '../../lib/projects';
+import { defaultLang, getLang, useTranslations } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  const projects = await getProjects(defaultLang);
+  return projects.map((project) => ({
+    params: { slug: getProjectSlug(project) },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { title, summary, role, organization, location, period, stack, links, cover, coverAlt } =
+  project.data;
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+const { Content } = await render(project);
+const periodLabel = formatPeriod(period, lang);
+const organizationLabel = [organization, location].filter(Boolean).join(' · ');
+---
+
+<BaseLayout title={title} description={summary}>
+  <article class="container case">
+    <a class="case__back" href="/proyectos">
+      <Icon name="arrow-left" size={18} />
+      {t('projects.back')}
+    </a>
+
+    <header class="case__header">
+      <ProjectTags project={project} />
+      <h1>{title}</h1>
+      <p class="case__summary">{summary}</p>
+    </header>
+
+    <div class="case__layout">
+      <aside class="case__aside">
+        <dl class="case__meta">
+          {
+            role && (
+              <div>
+                <dt>{t('projects.meta.role')}</dt>
+                <dd>{role}</dd>
+              </div>
+            )
+          }
+          {
+            organizationLabel && (
+              <div>
+                <dt>{t('projects.meta.organization')}</dt>
+                <dd>{organizationLabel}</dd>
+              </div>
+            )
+          }
+          {
+            periodLabel && (
+              <div>
+                <dt>{t('projects.meta.period')}</dt>
+                <dd>{periodLabel}</dd>
+              </div>
+            )
+          }
+          <div>
+            <dt>{t('projects.meta.stack')}</dt>
+            <dd>
+              <ul class="case__stack" role="list">
+                {stack.map((tech) => <li>{tech}</li>)}
+              </ul>
+            </dd>
+          </div>
+        </dl>
+
+        {
+          (links.repo || links.demo) && (
+            <ul class="case__links" role="list">
+              {links.demo && (
+                <li>
+                  <a href={links.demo} target="_blank" rel="noopener noreferrer">
+                    {t('projects.links.demo')}
+                    <Icon name="external" size={16} />
+                    <span class="sr-only">{t('a11y.newTab')}</span>
+                  </a>
+                </li>
+              )}
+              {links.repo && (
+                <li>
+                  <a href={links.repo} target="_blank" rel="noopener noreferrer">
+                    <Icon name="github" size={18} />
+                    {t('projects.links.repo')}
+                    <span class="sr-only">{t('a11y.newTab')}</span>
+                  </a>
+                </li>
+              )}
+            </ul>
+          )
+        }
+      </aside>
+
+      <div class="case__content">
+        {cover && <Image class="case__cover" src={cover} alt={coverAlt ?? ''} widths={[640, 960, 1280]} sizes="(min-width: 56rem) 60vw, 100vw" />}
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .case {
+    padding-block: var(--space-xl) var(--space-section);
+  }
+
+  .case__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .case__header {
+    display: grid;
+    gap: var(--space-s);
+    justify-items: start;
+    margin-block: var(--space-xl);
+  }
+
+  .case__summary {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  .case__layout {
+    display: grid;
+    gap: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  @media (min-width: 56rem) {
+    .case__layout {
+      grid-template-columns: 16rem minmax(0, 1fr);
+      gap: var(--space-3xl);
+    }
+
+    .case__aside {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-l));
+      align-self: start;
+    }
+  }
+
+  .case__meta {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .case__meta dt {
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+  }
+
+  .case__meta dd {
+    margin: 0;
+  }
+
+  .case__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-s);
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+  }
+
+  .case__links {
+    display: grid;
+    gap: var(--space-xs);
+    margin-top: var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+
+  .case__links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  /* Contenido Markdown: viene renderizado, por eso usa :global() */
+  .case__content {
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+  }
+
+  .case__content :global(h2) {
+    margin-top: var(--space-l);
+    font-size: var(--text-h3);
+  }
+
+  .case__content :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .case__content :global(ul) {
+    display: grid;
+    gap: var(--space-2xs);
+    max-width: var(--measure);
+    padding-left: 1.25rem;
+  }
+
+  .case__content :global(li::marker) {
+    color: var(--color-accent);
+  }
+
+  .case__content :global(.case__cover) {
+    width: 100%;
+    border-radius: var(--radius-m);
+    border: var(--border-width) solid var(--color-border);
+  }
+</style>
