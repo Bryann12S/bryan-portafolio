@@ -7,8 +7,9 @@ stack:
   - Astro
   - TypeScript
   - CSS
-links:
-  repo: https://github.com/Bryann12S/bryan-portafolio
+# El repositorio es privado por ahora. Al hacerlo público, añadir:
+# links:
+#   repo: https://github.com/Bryann12S/bryan-portafolio
 order: 5
 ---
 

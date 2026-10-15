@@ -86,6 +86,11 @@ export const ui = {
     'form.error.reason': 'Elige un motivo.',
     'form.error.message': 'Escribe un mensaje de al menos 10 caracteres.',
 
+    'notFound.title': 'Página no encontrada',
+    'notFound.text': 'La dirección que buscas no existe o cambió de lugar.',
+    'notFound.home': 'Ir al inicio',
+    'notFound.projects': 'Ver proyectos',
+
     'thanks.title': 'Mensaje enviado',
     'thanks.text': 'Gracias por escribirme. Te responderé a tu email lo antes posible.',
     'thanks.back': 'Volver al inicio',

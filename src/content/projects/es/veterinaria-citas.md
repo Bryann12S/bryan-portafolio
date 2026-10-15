@@ -24,4 +24,15 @@ Proyecto conceptual: un sistema web para que los clientes de una veterinaria age
 - Frontend en Angular.
 - Backend en Express (Node.js), separado del frontend.
 
-[PENDIENTE: funcionalidades principales]
+## Funcionalidades
+
+Clientes:
+
+- Registran a sus mascotas.
+- Consultan los horarios disponibles.
+- Agendan citas en línea.
+
+Administrador y veterinario:
+
+- Ven las citas agendadas.
+- Realizan el seguimiento de cada cita.

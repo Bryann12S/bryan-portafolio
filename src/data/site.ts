@@ -30,6 +30,13 @@ export const site = {
     countryCode: 'EC',
   },
   locale: 'es_EC',
+  /** Imagen de vista previa al compartir el enlace en redes y mensajería */
+  shareImage: {
+    src: '/og-image.jpg',
+    width: 1200,
+    height: 630,
+    alt: 'Bryan Shiguango, desarrollador fullstack e ingeniero de software',
+  },
   themeColor: '#161616',
   contact: {
     email: 'bryanshiguango6@gmail.com',

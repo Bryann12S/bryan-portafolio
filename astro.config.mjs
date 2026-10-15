@@ -3,8 +3,14 @@ import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  // [PENDIENTE: dominio final]. Se reemplaza al publicar en Netlify.
-  site: 'https://example.com',
+  // Subdominio elegido en Netlify. Confirmar disponibilidad al publicar (etapa 11).
+  site: 'https://bryanshiguangodev.netlify.app',
+
+  // El CSS del sitio es pequeño (~5 KB comprimido): se incrusta en cada página para que
+  // el navegador no tenga que esperar a descargar archivos CSS antes de pintar (mejor LCP).
+  build: {
+    inlineStylesheets: 'always',
+  },
 
   // Español por defecto y sin prefijo (/proyectos). El inglés se añadirá como /en/.
   i18n: {
@@ -47,7 +53,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       // La página de confirmación del formulario no debe aparecer en buscadores.
-      filter: (page) => !page.includes('/gracias'),
+      filter: (page) => !page.includes('/gracias') && !page.includes('/404'),
       i18n: {
         defaultLocale: 'es',
         locales: { es: 'es-EC' },

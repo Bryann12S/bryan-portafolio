@@ -23,7 +23,10 @@ Proyecto conceptual: una aplicación de escritorio pensada para la gestión de u
 - Interfaz de escritorio construida con Tkinter.
 - Código organizado con el patrón MVC (modelos, vistas y controladores).
 
-## Módulos
+## Funcionalidades
 
-- Panel de control con ventas y ganancia del día, deuda pendiente, deudores activos, productos activos y productos con stock bajo.
-- Productos, punto de venta, historial de ventas y cuentas fiadas.
+- Registro de productos.
+- Control de inventario.
+- Registro de ventas.
+- Gestión de fiados (cuentas por cobrar a clientes).
+- Panel de control con el resumen del día: ventas, deudas y productos con stock bajo.
