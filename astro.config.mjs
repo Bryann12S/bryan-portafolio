@@ -46,6 +46,8 @@ export default defineConfig({
 
   integrations: [
     sitemap({
+      // La página de confirmación del formulario no debe aparecer en buscadores.
+      filter: (page) => !page.includes('/gracias'),
       i18n: {
         defaultLocale: 'es',
         locales: { es: 'es-EC' },

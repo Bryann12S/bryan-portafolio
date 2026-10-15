@@ -2,14 +2,11 @@
 // Botón flotante de WhatsApp. No se renderiza hasta que exista el número en site.ts,
 // para no publicar un enlace roto.
 import Icon from '../ui/Icon.astro';
-import { site } from '../../data/site';
+import { getWhatsAppUrl } from '../../lib/contact';
 import { getLang, useTranslations } from '../../i18n/ui';
 
 const t = useTranslations(getLang(Astro.currentLocale));
-const number = site.contact.whatsapp;
-const href = number
-  ? `https://wa.me/${number}?text=${encodeURIComponent(t('whatsapp.message'))}`
-  : null;
+const href = getWhatsAppUrl(t('whatsapp.message'));
 ---
 
 {

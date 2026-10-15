@@ -1,0 +1,122 @@
+---
+// Contacto: canales directos (solo los confirmados en site.ts) y formulario de Netlify Forms.
+import ContactForm from '../ui/ContactForm.astro';
+import { site } from '../../data/site';
+import { getWhatsAppUrl } from '../../lib/contact';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+const { email, whatsappDisplay, linkedin, github } = site.contact;
+const whatsappUrl = getWhatsAppUrl(t('whatsapp.message'));
+
+const channels = [
+  email && { label: t('contact.email'), value: email, href: `mailto:${email}`, external: false },
+  whatsappUrl &&
+    whatsappDisplay && {
+      label: t('contact.whatsapp'),
+      value: whatsappDisplay,
+      href: whatsappUrl,
+      external: true,
+    },
+  linkedin && { label: t('contact.linkedin'), value: site.name, href: linkedin, external: true },
+  github && {
+    label: t('contact.github'),
+    value: new URL(github).pathname.replaceAll('/', ''),
+    href: github,
+    external: true,
+  },
+].filter((channel) => Boolean(channel)) as {
+  label: string;
+  value: string;
+  href: string;
+  external: boolean;
+}[];
+---
+
+<section class="contact container" id="contacto" aria-labelledby="contact-title">
+  <div class="contact__info">
+    <h2 id="contact-title">{t('contact.title')}</h2>
+    <p class="contact__intro">{t('contact.intro')}</p>
+
+    <ul class="channels" role="list" aria-label={t('contact.channels')}>
+      {
+        channels.map(({ label, value, href, external }) => (
+          <li>
+            <a
+              class="channel"
+              href={href}
+              {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+            >
+              <span class="channel__label">{label}</span>
+              <span class="channel__value">{value}</span>
+              {external && <span class="sr-only">{t('a11y.newTab')}</span>}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <ContactForm />
+</section>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-2xl);
+    padding-block: var(--space-section);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .contact__info {
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+  }
+
+  .contact__intro {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  .channels {
+    margin-top: var(--space-s);
+    padding: 0;
+    list-style: none;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .channel {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: var(--space-s);
+    align-items: baseline;
+    padding-block: var(--space-s);
+    border-top: var(--border-width) solid var(--color-border);
+    text-decoration: none;
+  }
+
+  .channel__label {
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+  }
+
+  .channel__value {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .channel:hover .channel__value {
+      color: var(--color-accent);
+    }
+  }
+
+  @media (min-width: 56rem) {
+    .contact {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: var(--space-3xl);
+    }
+  }
+</style>

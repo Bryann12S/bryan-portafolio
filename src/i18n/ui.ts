@@ -59,6 +59,37 @@ export const ui = {
     'skills.group.desktop': 'Escritorio',
     'skills.group.tools': 'Herramientas',
 
+    'contact.title': 'Contacto',
+    'contact.intro':
+      '¿Tienes una oportunidad laboral o necesitas una página web? Escríbeme por el canal que prefieras o deja tu mensaje en el formulario.',
+    'contact.channels': 'Canales de contacto',
+    'contact.email': 'Email',
+    'contact.whatsapp': 'WhatsApp',
+    'contact.linkedin': 'LinkedIn',
+    'contact.github': 'GitHub',
+
+    'form.title': 'Envíame un mensaje',
+    'form.name': 'Nombre',
+    'form.email': 'Email',
+    'form.reason': 'Motivo',
+    'form.reason.job': 'Oportunidad laboral',
+    'form.reason.web': 'Quiero una web',
+    'form.reason.other': 'Otro',
+    'form.message': 'Mensaje',
+    'form.honeypot': 'No completes este campo si eres una persona',
+    'form.privacy': 'Solo uso estos datos para responderte.',
+    'form.submit': 'Enviar mensaje',
+    'form.required': 'obligatorio',
+    'form.error.summary': 'Revisa los campos marcados para poder enviar el mensaje.',
+    'form.error.name': 'Escribe tu nombre.',
+    'form.error.email': 'Escribe un email válido, por ejemplo nombre@correo.com.',
+    'form.error.reason': 'Elige un motivo.',
+    'form.error.message': 'Escribe un mensaje de al menos 10 caracteres.',
+
+    'thanks.title': 'Mensaje enviado',
+    'thanks.text': 'Gracias por escribirme. Te responderé a tu email lo antes posible.',
+    'thanks.back': 'Volver al inicio',
+
     'projects.title': 'Proyectos',
     'projects.intro':
       'Trabajo real para instituciones y organizaciones, junto con demos que uso para practicar y explorar tecnologías. Cada uno indica claramente qué es.',

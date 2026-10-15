@@ -1,0 +1,30 @@
+---
+// Página de confirmación tras enviar el formulario (Netlify redirige aquí). No se indexa.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { getLang, useTranslations } from '../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<BaseLayout title={t('thanks.title')} noindex>
+  <section class="container thanks">
+    <h1>{t('thanks.title')}</h1>
+    <p>{t('thanks.text')}</p>
+    <Button href="/">{t('thanks.back')}</Button>
+  </section>
+</BaseLayout>
+
+<style>
+  .thanks {
+    display: grid;
+    gap: var(--space-m);
+    justify-items: start;
+    padding-block: var(--space-section);
+  }
+
+  .thanks p {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+</style>

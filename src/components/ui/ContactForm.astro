@@ -1,0 +1,319 @@
+---
+// Formulario de contacto con Netlify Forms (sin backend propio).
+// Sin JavaScript: validación nativa del navegador. Con JavaScript: mensajes propios en español,
+// accesibles (aria-invalid + aria-describedby) y foco en el primer campo con error.
+// Netlify detecta el formulario en el HTML compilado; en local el envío no funciona.
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+
+const reasons = [
+  { value: 'trabajo', label: t('form.reason.job') },
+  { value: 'web', label: t('form.reason.web') },
+  { value: 'otro', label: t('form.reason.other') },
+];
+
+const errors = {
+  name: t('form.error.name'),
+  email: t('form.error.email'),
+  reason: t('form.error.reason'),
+  message: t('form.error.message'),
+};
+---
+
+<form
+  class="form"
+  name="contacto"
+  method="POST"
+  action="/gracias"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  aria-labelledby="form-title"
+  data-contact-form
+  data-errors={JSON.stringify(errors)}
+>
+  <h3 class="form__title" id="form-title">{t('form.title')}</h3>
+  <input type="hidden" name="form-name" value="contacto" />
+
+  <p class="form__summary" role="alert" data-form-summary hidden>{t('form.error.summary')}</p>
+
+  <p class="form__honeypot" aria-hidden="true">
+    <label>{t('form.honeypot')} <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <div class="field">
+    <label for="contact-name">{t('form.name')}</label>
+    <input
+      id="contact-name"
+      name="nombre"
+      type="text"
+      autocomplete="name"
+      required
+      aria-describedby="contact-name-error"
+    />
+    <p class="field__error" id="contact-name-error" data-error-for="nombre"></p>
+  </div>
+
+  <div class="field">
+    <label for="contact-email">{t('form.email')}</label>
+    <input
+      id="contact-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      required
+      aria-describedby="contact-email-error"
+    />
+    <p class="field__error" id="contact-email-error" data-error-for="email"></p>
+  </div>
+
+  <fieldset class="field" aria-describedby="contact-reason-error">
+    <legend>{t('form.reason')}</legend>
+    <div class="choices">
+      {
+        reasons.map(({ value, label }) => (
+          <label class="choice">
+            <input class="choice__input" type="radio" name="motivo" value={value} required />
+            <span>{label}</span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="field__error" id="contact-reason-error" data-error-for="motivo"></p>
+  </fieldset>
+
+  <div class="field">
+    <label for="contact-message">{t('form.message')}</label>
+    <textarea
+      id="contact-message"
+      name="mensaje"
+      rows="5"
+      minlength="10"
+      required
+      aria-describedby="contact-message-error"></textarea>
+    <p class="field__error" id="contact-message-error" data-error-for="mensaje"></p>
+  </div>
+
+  <p class="form__privacy">{t('form.privacy')}</p>
+  <button class="form__submit" type="submit">{t('form.submit')}</button>
+</form>
+
+<script>
+  // Validación accesible con mensajes propios. Si este script no carga, actúa la nativa.
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+
+  if (form) {
+    const messages: Record<string, string> = JSON.parse(form.dataset.errors ?? '{}');
+    const summary = form.querySelector<HTMLElement>('[data-form-summary]');
+    const fields = {
+      nombre: { key: 'name', valid: (v: string) => v.trim().length > 0 },
+      email: { key: 'email', valid: (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
+      motivo: { key: 'reason', valid: (v: string) => v.length > 0 },
+      mensaje: { key: 'message', valid: (v: string) => v.trim().length >= 10 },
+    } as const;
+    type FieldName = keyof typeof fields;
+
+    form.noValidate = true;
+
+    const valueOf = (name: FieldName) => {
+      const value = new FormData(form).get(name);
+      return typeof value === 'string' ? value : '';
+    };
+
+    const setError = (name: FieldName, show: boolean) => {
+      const error = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      const inputs = form.querySelectorAll<HTMLInputElement>(`[name="${name}"]`);
+      if (error) error.textContent = show ? messages[fields[name].key] : '';
+      inputs.forEach((input) => input.setAttribute('aria-invalid', String(show)));
+    };
+
+    const validate = (name: FieldName) => {
+      const ok = fields[name].valid(valueOf(name));
+      setError(name, !ok);
+      return ok;
+    };
+
+    form.addEventListener('submit', (event) => {
+      const invalid = (Object.keys(fields) as FieldName[]).filter((name) => !validate(name));
+      if (invalid.length === 0) return;
+
+      event.preventDefault();
+      if (summary) summary.hidden = false;
+      form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
+    });
+
+    // Al corregir un campo con error, el mensaje se actualiza en el momento.
+    form.addEventListener('input', (event) => {
+      const target = event.target as HTMLInputElement;
+      const name = target.name as FieldName;
+      if (name in fields && target.getAttribute('aria-invalid') === 'true') validate(name);
+      if (summary && !form.querySelector('[aria-invalid="true"]')) summary.hidden = true;
+    });
+  }
+</script>
+
+<style>
+  .form {
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+    padding: var(--space-l);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface);
+  }
+
+  .form__title {
+    font-size: var(--text-h3);
+  }
+
+  .form__honeypot {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .form__summary {
+    padding: var(--space-xs) var(--space-s);
+    border: var(--border-width) solid var(--color-error);
+    border-radius: var(--radius-s);
+    color: var(--color-error);
+    font-size: var(--text-small);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-2xs);
+    margin: 0;
+    padding: 0;
+    border: none;
+    min-width: 0;
+  }
+
+  .field label,
+  .field legend {
+    padding: 0;
+    font-size: var(--text-small);
+    font-weight: 500;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: var(--space-xs) var(--space-s);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-s);
+    background-color: var(--color-bg);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+
+  .field input:focus-visible,
+  .field textarea:focus-visible {
+    border-color: var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: var(--color-error);
+  }
+
+  .field__error {
+    font-size: var(--text-small);
+    color: var(--color-error);
+  }
+
+  .field__error:empty {
+    display: none;
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-top: var(--space-2xs);
+  }
+
+  .choice {
+    position: relative;
+  }
+
+  /* Radio nativo oculto pero accesible; más específico que ".field input" */
+  .field .choice__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .choice span {
+    display: inline-block;
+    padding: var(--space-2xs) var(--space-s);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .choice:has(:checked) span {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .choice:has(:focus-visible) span {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  .choice:has([aria-invalid='true']) span {
+    border-color: var(--color-error);
+  }
+
+  .form__privacy {
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+  }
+
+  .form__submit {
+    justify-self: start;
+    min-height: 2.875rem;
+    padding: var(--space-xs) var(--space-l);
+    border: none;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 600;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .form__submit:active {
+    transform: scale(0.97);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .form__submit:hover {
+      background-color: var(--color-accent-hover);
+    }
+
+    .choice:not(:has(:checked)):hover span {
+      border-color: var(--color-text-muted);
+      color: var(--color-text);
+    }
+  }
+</style>

@@ -23,6 +23,8 @@
   --color-accent-hover: #d6f86f;
   --color-on-accent: #161616;
 
+  --color-error: #ff8a7a;
+
   --color-focus: var(--color-accent);
   --color-selection-bg: var(--color-accent);
   --color-selection-text: var(--color-on-accent);

@@ -1,11 +1,13 @@
 // Datos generales del sitio. Se escriben una sola vez y los usan el SEO, el header,
 // el footer, el contacto y el botón de WhatsApp.
-// Regla: solo datos confirmados por Bryan. Lo que falta queda en null con [PENDIENTE].
+// Regla: solo datos confirmados por Bryan. Lo que falte queda en null con [PENDIENTE].
 
 export interface SiteContact {
   email: string | null;
   /** Número en formato internacional sin "+" ni espacios, p. ej. 593XXXXXXXXX */
   whatsapp: string | null;
+  /** Número tal como se muestra en pantalla */
+  whatsappDisplay: string | null;
   linkedin: string | null;
   github: string | null;
 }
@@ -30,9 +32,10 @@ export const site = {
   locale: 'es_EC',
   themeColor: '#161616',
   contact: {
-    email: null, // [PENDIENTE: email de contacto]
-    whatsapp: null, // [PENDIENTE: número de WhatsApp]
-    linkedin: null, // [PENDIENTE: URL de LinkedIn]
+    email: 'bryanshiguango6@gmail.com',
+    whatsapp: '593981413451',
+    whatsappDisplay: '+593 98 141 3451',
+    linkedin: 'https://www.linkedin.com/in/bryan-shiguango-b41402351',
     github: 'https://github.com/Bryann12S',
   } satisfies SiteContact,
 } as const;
