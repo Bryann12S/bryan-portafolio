@@ -46,6 +46,10 @@ src/
   content.config.ts  Esquema validado de los proyectos
 ```
 
+## Publicación
+
+El sitio se publica en Netlify automáticamente con cada `git push` a `main`. La configuración de compilación está en `netlify.toml`. El formulario de contacto usa Netlify Forms; los mensajes llegan al panel de Netlify, en **Forms**.
+
 ## Agregar un proyecto
 
 1. Crea un archivo en `src/content/projects/es/`, por ejemplo `mi-proyecto.md`. El nombre del archivo será la URL: `/proyectos/mi-proyecto`.
