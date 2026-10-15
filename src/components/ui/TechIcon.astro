@@ -1,0 +1,36 @@
+---
+// Logo de una tecnología (Simple Icons) en el color del texto. Sin logo oficial: icono genérico.
+import { techIcons, type TechIconName } from '../../data/techIcons';
+
+interface Props {
+  name?: TechIconName;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 32, class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  aria-hidden="true"
+  focusable="false"
+  fill={name ? 'currentColor' : 'none'}
+  stroke={name ? undefined : 'currentColor'}
+  stroke-width={name ? undefined : 1.75}
+  stroke-linejoin="round"
+>
+  {
+    name ? (
+      <path d={techIcons[name]} />
+    ) : (
+      <>
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <path d="M3 9h18M7 6.5h.01M10 6.5h.01" stroke-linecap="round" />
+      </>
+    )
+  }
+</svg>

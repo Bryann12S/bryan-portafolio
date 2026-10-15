@@ -1,0 +1,161 @@
+---
+// Habilidades por categoría con efecto "dock": con ratón, la tecnología bajo el cursor se eleva
+// y sus vecinas se arquean suavemente. El nombre siempre está visible, así que nada depende del hover.
+import TechIcon from '../ui/TechIcon.astro';
+import { skillGroups } from '../../data/skills';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<section class="skills container" id="habilidades" aria-labelledby="skills-title">
+  <header class="skills__header">
+    <h2 id="skills-title">{t('skills.title')}</h2>
+    <p class="skills__intro">{t('skills.intro')}</p>
+  </header>
+
+  <div class="skills__groups">
+    {
+      skillGroups.map(({ label, skills }) => (
+        <div class="skills__group">
+          <h3 class="skills__label">{t(label)}</h3>
+          <ul class="skills__list" role="list">
+            {skills.map(({ name, icon }) => (
+              <li class="skill">
+                <TechIcon name={icon} class="skill__icon" />
+                <span class="skill__name">{name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .skills {
+    padding-block: var(--space-section);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .skills__header {
+    display: grid;
+    gap: var(--space-s);
+    margin-bottom: var(--space-xl);
+  }
+
+  .skills__intro {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  .skills__group {
+    display: grid;
+    gap: var(--space-s);
+    padding-block: var(--space-m);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .skills__label {
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--color-text-subtle);
+  }
+
+  .skills__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .skill {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2xs);
+    width: 5.75rem;
+    padding: var(--space-2xs) var(--space-3xs);
+    text-align: center;
+    transform-origin: 50% 100%;
+  }
+
+  .skill :global(.skill__icon) {
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .skill__name {
+    font-size: var(--text-label);
+    line-height: 1.3;
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  @media (min-width: 56rem) {
+    .skills__header {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: end;
+      gap: var(--space-xl);
+    }
+
+    .skills__intro {
+      justify-self: end;
+      max-width: 34rem;
+    }
+
+    .skills__group {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-l);
+    }
+  }
+
+  /* Ratón: resaltado de color (también con movimiento reducido) */
+  @media (hover: hover) and (pointer: fine) {
+    .skill:hover :global(.skill__icon) {
+      color: var(--color-accent);
+    }
+
+    .skill:hover .skill__name {
+      color: var(--color-text);
+    }
+  }
+
+  /* Ratón y movimiento permitido: efecto dock (elevación y arco en las vecinas) */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .skill {
+      transition: transform var(--duration-base) var(--ease-out);
+    }
+
+    .skill:hover {
+      z-index: 1;
+      transform: translateY(-0.625rem) scale(1.18);
+    }
+
+    .skill:hover + .skill,
+    .skill:has(+ .skill:hover) {
+      transform: translateY(-0.3125rem) scale(1.08);
+    }
+
+    .skill:hover + .skill + .skill,
+    .skill:has(+ .skill + .skill:hover) {
+      transform: translateY(-0.125rem) scale(1.03);
+    }
+  }
+
+  /* Táctil: al tocar, la tecnología se resalta (sin movimiento) */
+  @media (hover: none) {
+    .skill:active :global(.skill__icon) {
+      color: var(--color-accent);
+    }
+
+    .skill:active .skill__name {
+      color: var(--color-text);
+    }
+  }
+</style>

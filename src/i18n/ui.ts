@@ -43,6 +43,14 @@ export const ui = {
     'about.modalityValue':
       'Presencial en Napo, Pastaza, Orellana y Quito. Remoto para el resto del país y el exterior.',
 
+    'skills.title': 'Habilidades',
+    'skills.intro': 'Tecnologías con las que he trabajado en proyectos reales y demos.',
+    'skills.group.frontend': 'Frontend',
+    'skills.group.backend': 'Backend',
+    'skills.group.databases': 'Bases de datos',
+    'skills.group.desktop': 'Escritorio',
+    'skills.group.tools': 'Herramientas',
+
     'projects.title': 'Proyectos',
     'projects.intro':
       'Trabajo real para instituciones y organizaciones, junto con demos que uso para practicar y explorar tecnologías. Cada uno indica claramente qué es.',
