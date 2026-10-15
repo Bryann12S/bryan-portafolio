@@ -34,7 +34,7 @@ const t = useTranslations(getLang(Astro.currentLocale));
       format="webp"
       widths={[360, 540, 720, 980]}
       quality={78}
-      sizes="(min-width: 56rem) 38vw, 80vw"
+      sizes="(min-width: 56rem) 38vw, min(56vw, 17rem)"
       loading="eager"
       fetchpriority="high"
     />
@@ -44,8 +44,8 @@ const t = useTranslations(getLang(Astro.currentLocale));
 <style>
   .hero {
     display: grid;
-    gap: var(--space-xl);
-    padding-block: var(--space-xl) var(--space-section);
+    gap: var(--space-l);
+    padding-block: var(--space-l) var(--space-section);
   }
 
   .hero__text {
@@ -99,10 +99,12 @@ const t = useTranslations(getLang(Astro.currentLocale));
     margin-top: var(--space-xs);
   }
 
+  /* Móvil y tablet: la foto va arriba y centrada, con un tamaño que deja ver el nombre
+     en la primera pantalla. En escritorio pasa a la columna izquierda. */
   .hero__media {
-    /* Asimetría en móvil: la foto se desplaza a la derecha */
-    width: min(80%, 22rem);
-    justify-self: end;
+    order: -1;
+    width: min(56%, 17rem);
+    justify-self: center;
   }
 
   .hero__photo {
@@ -171,7 +173,6 @@ const t = useTranslations(getLang(Astro.currentLocale));
     }
 
     .hero__media {
-      order: -1;
       display: flex;
       justify-content: center;
       width: 100%;
