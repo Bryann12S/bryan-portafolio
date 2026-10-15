@@ -9,6 +9,8 @@ stack:
   - JavaScript
 links:
   repo: https://github.com/Bryann12S/Sistema-Web-de-Veterinaria
+cover: ../../../assets/projects/veterinaria-citas.webp
+coverAlt: Pantalla de inicio de sesión de Huellitas Felices, el sistema de citas en línea para la veterinaria
 featured: true
 order: 4
 ---
@@ -22,4 +24,4 @@ Proyecto conceptual: un sistema web para que los clientes de una veterinaria age
 - Frontend en Angular.
 - Backend en Express (Node.js), separado del frontend.
 
-[PENDIENTE: funcionalidades principales y capturas de pantalla]
+[PENDIENTE: funcionalidades principales]

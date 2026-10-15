@@ -43,6 +43,21 @@ const organizationLabel = [organization, location].filter(Boolean).join(' · ');
       <p class="case__summary">{summary}</p>
     </header>
 
+    {
+      cover && (
+        <figure class="case__figure" style={`max-width: ${cover.width}px`}>
+          <Image
+            class="case__cover"
+            src={cover}
+            alt={coverAlt ?? ''}
+            widths={[...[640, 960, 1280].filter((w) => w < cover.width), cover.width]}
+            sizes="(min-width: 80rem) 75rem, 100vw"
+            loading="eager"
+          />
+        </figure>
+      )
+    }
+
     <div class="case__layout">
       <aside class="case__aside">
         <dl class="case__meta">
@@ -107,7 +122,6 @@ const organizationLabel = [organization, location].filter(Boolean).join(' · ');
       </aside>
 
       <div class="case__content">
-        {cover && <Image class="case__cover" src={cover} alt={coverAlt ?? ''} widths={[640, 960, 1280]} sizes="(min-width: 56rem) 60vw, 100vw" />}
         <Content />
       </div>
     </div>
@@ -227,8 +241,13 @@ const organizationLabel = [organization, location].filter(Boolean).join(' · ');
     color: var(--color-accent);
   }
 
-  .case__content :global(.case__cover) {
+  .case__figure {
+    margin: 0 0 var(--space-xl);
+  }
+
+  .case__figure :global(.case__cover) {
     width: 100%;
+    height: auto;
     border-radius: var(--radius-m);
     border: var(--border-width) solid var(--color-border);
   }

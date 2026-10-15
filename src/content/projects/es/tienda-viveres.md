@@ -8,6 +8,8 @@ stack:
   - Tkinter
 links:
   repo: https://github.com/Bryann12S/tienda_app
+cover: ../../../assets/projects/tienda-viveres.webp
+coverAlt: Panel de control de Tienda App con ventas del día, deuda pendiente, deudores, productos activos y stock bajo
 featured: true
 order: 3
 ---
@@ -21,4 +23,7 @@ Proyecto conceptual: una aplicación de escritorio pensada para la gestión de u
 - Interfaz de escritorio construida con Tkinter.
 - Código organizado con el patrón MVC (modelos, vistas y controladores).
 
-[PENDIENTE: funcionalidades principales y capturas de pantalla]
+## Módulos
+
+- Panel de control con ventas y ganancia del día, deuda pendiente, deudores activos, productos activos y productos con stock bajo.
+- Productos, punto de venta, historial de ventas y cuentas fiadas.

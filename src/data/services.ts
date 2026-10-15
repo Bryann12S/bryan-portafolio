@@ -18,7 +18,7 @@ export const services: Service[] = [
       'Diseño adaptado a móvil',
       'Botón de WhatsApp',
       'Formulario de contacto',
-      'SEO básico',
+      'Preparada para aparecer en Google',
     ],
   },
   {
@@ -30,7 +30,7 @@ export const services: Service[] = [
       'Inicio, servicios, nosotros, ubicación con mapa y contacto',
       'Diseño adaptado a móvil',
       'Botón de WhatsApp',
-      'SEO básico',
+      'Preparada para aparecer en Google',
     ],
   },
   {

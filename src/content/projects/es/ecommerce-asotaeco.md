@@ -13,6 +13,8 @@ stack:
   - Laravel
   - PHP
   - MySQL
+cover: ../../../assets/projects/ecommerce-asotaeco.webp
+coverAlt: Página de inicio de la tienda en línea de ASOTAECO con el banner de ropa tradicional
 featured: true
 order: 2
 ---
@@ -27,5 +29,3 @@ Proyecto de tesis desarrollado para la Asociación ASOTAECO: una plataforma web 
 - Implementación de los módulos de control de ventas e inventario.
 - Desarrollo del backend con Laravel y gestión de la base de datos MySQL.
 - Administración y mantenimiento del sistema web.
-
-[PENDIENTE: capturas de pantalla del sistema]

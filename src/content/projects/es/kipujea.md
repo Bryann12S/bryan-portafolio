@@ -14,6 +14,8 @@ stack:
   - PostgreSQL
   - SQLite
   - Electron
+cover: ../../../assets/projects/kipujea.webp
+coverAlt: Pantalla de inicio de sesión de KIPUJEA Rectores, plataforma de gestión educativa intercultural bilingüe
 featured: true
 order: 1
 ---
@@ -28,5 +30,3 @@ KIPUJEA es la plataforma educativa que usan docentes y rectores de las instituci
 - Desarrollo de funcionalidades en Angular y Spring Boot para entornos offline y online.
 - Implementación de un módulo de consulta de calificaciones que mejora el acceso a la información académica.
 - Integración y sincronización de datos entre las versiones offline y online del sistema.
-
-[PENDIENTE: capturas de pantalla, si la institución permite mostrarlas]
