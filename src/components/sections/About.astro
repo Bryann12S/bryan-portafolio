@@ -1,9 +1,11 @@
 ---
 // Sobre mí: texto en primera persona y datos rápidos. Solo información confirmada por Bryan.
 import { site } from '../../data/site';
+import { formatOnsiteList } from '../../data/coverage';
 import { getLang, useTranslations } from '../../i18n/ui';
 
-const t = useTranslations(getLang(Astro.currentLocale));
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
 const { degree, institution, year } = site.education;
 ---
 
@@ -27,7 +29,7 @@ const { degree, institution, year } = site.education;
     </div>
     <div>
       <dt>{t('about.modality')}</dt>
-      <dd>{t('about.modalityValue')}</dd>
+      <dd>{t('coverage.onsite')} {formatOnsiteList(lang)}. {t('coverage.remote')}</dd>
     </div>
   </dl>
 </section>

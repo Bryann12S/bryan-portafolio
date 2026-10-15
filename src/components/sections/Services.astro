@@ -1,0 +1,158 @@
+---
+// Servicios para negocios (sin precios) y zona de cobertura.
+// Cada servicio es una fila editorial: título y descripción, qué incluye y botón para cotizar.
+import Button from '../ui/Button.astro';
+import { services } from '../../data/services';
+import { formatOnsiteList } from '../../data/coverage';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const lang = getLang(Astro.currentLocale);
+const t = useTranslations(lang);
+---
+
+<section class="services container" id="servicios" aria-labelledby="services-title">
+  <header class="services__header">
+    <h2 id="services-title">{t('services.title')}</h2>
+    <p class="services__intro">{t('services.intro')}</p>
+  </header>
+
+  <ul class="services__list" role="list">
+    {
+      services.map(({ id, title, description, includes }) => (
+        <li class="service">
+          <div class="service__main">
+            <h3 class="service__title" id={`service-${id}`}>{title}</h3>
+            <p class="service__description">{description}</p>
+          </div>
+
+          <div class="service__includes">
+            <p class="service__includes-label">{t('services.includes')}</p>
+            <ul role="list">
+              {includes.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="service__action">
+            <Button href="#contacto" variant="secondary">
+              {t('services.cta')}
+              <span class="sr-only">: {title}</span>
+            </Button>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="coverage">
+    <h3 class="coverage__title">{t('coverage.title')}</h3>
+    <p>
+      <strong>{t('coverage.onsite')} {formatOnsiteList(lang)}.</strong>
+      {' '}{t('coverage.remote')}
+    </p>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding-block: var(--space-section);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .services__header {
+    display: grid;
+    gap: var(--space-s);
+    margin-bottom: var(--space-xl);
+  }
+
+  .services__intro {
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  .services__list {
+    padding: 0;
+    list-style: none;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .service {
+    display: grid;
+    gap: var(--space-m);
+    padding-block: var(--space-l);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .service__title {
+    font-size: var(--text-h3);
+  }
+
+  .service__description {
+    margin-top: var(--space-2xs);
+    color: var(--color-text-muted);
+  }
+
+  .service__includes-label {
+    margin-bottom: var(--space-2xs);
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+  }
+
+  .service__includes ul {
+    display: grid;
+    gap: var(--space-3xs);
+    padding-left: 1.1rem;
+    font-size: var(--text-small);
+  }
+
+  .service__includes li::marker {
+    color: var(--color-accent);
+  }
+
+  .coverage {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-top: var(--space-xl);
+  }
+
+  .coverage__title {
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--color-text-subtle);
+  }
+
+  .coverage p {
+    color: var(--color-text-muted);
+  }
+
+  .coverage strong {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  @media (min-width: 56rem) {
+    .services__header {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: end;
+      gap: var(--space-xl);
+    }
+
+    .services__intro {
+      justify-self: end;
+      max-width: 34rem;
+    }
+
+    .service {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) auto;
+      align-items: start;
+      gap: var(--space-xl);
+    }
+
+    .coverage {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      gap: var(--space-l);
+      align-items: baseline;
+    }
+  }
+</style>

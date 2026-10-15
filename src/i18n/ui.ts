@@ -40,8 +40,16 @@ export const ui = {
     'about.education': 'Formación',
     'about.location': 'Ubicación',
     'about.modality': 'Modalidad',
-    'about.modalityValue':
-      'Presencial en Napo, Pastaza, Orellana y Quito. Remoto para el resto del país y el exterior.',
+
+    'coverage.title': 'Cobertura',
+    'coverage.onsite': 'Presencial en',
+    'coverage.remote': 'Remoto para el resto del país y el exterior.',
+
+    'services.title': 'Servicios',
+    'services.intro':
+      'Páginas web para pequeños negocios y profesionales. Cada proyecto se cotiza según lo que necesitas: escríbeme y lo conversamos.',
+    'services.includes': 'Incluye',
+    'services.cta': 'Cotizar',
 
     'skills.title': 'Habilidades',
     'skills.intro': 'Tecnologías con las que he trabajado en proyectos reales y demos.',
