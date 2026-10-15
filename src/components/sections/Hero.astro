@@ -11,7 +11,6 @@ const t = useTranslations(getLang(Astro.currentLocale));
 
 <section class="hero container" aria-labelledby="hero-title">
   <div class="hero__text">
-    <p class="hero__label" aria-hidden="true">{t('hero.label')}</p>
     <h1 class="hero__name" id="hero-title">
       <span>Bryan</span>{' '}
       <span>Shigu<span class="hero__accent">ango</span></span>
@@ -57,15 +56,9 @@ const t = useTranslations(getLang(Astro.currentLocale));
     align-content: end;
   }
 
-  .hero__label {
-    font-family: var(--font-mono);
-    font-size: var(--text-small);
-    color: var(--color-accent);
-  }
-
   .hero__name {
     /* "SHIGUANGO" mide ≈10.2× el tamaño de fuente: 9.4cqi lo mantiene dentro de la columna */
-    font-size: clamp(1.75rem, 9.4cqi, 6rem);
+    font-size: clamp(1.375rem, 9.4cqi, 6rem);
     font-weight: 800;
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-display);
@@ -115,24 +108,80 @@ const t = useTranslations(getLang(Astro.currentLocale));
   .hero__photo {
     width: 100%;
     height: auto;
+    max-height: 70svh;
     aspect-ratio: 3 / 4;
     object-fit: cover;
+    object-position: top;
     border-radius: var(--radius-m);
     border: var(--border-width) solid var(--color-border);
   }
 
+  /* Entrada en cascada: el único momento animado principal del sitio.
+     Solo CSS: no depende de JavaScript y no se aplica con movimiento reducido. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__text > * {
+      animation: hero-rise 560ms var(--ease-out) both;
+    }
+
+    .hero__text > :nth-child(2) {
+      animation-delay: 70ms;
+    }
+
+    .hero__text > :nth-child(3) {
+      animation-delay: 130ms;
+    }
+
+    .hero__text > :nth-child(4) {
+      animation-delay: 190ms;
+    }
+
+    .hero__media {
+      animation: hero-photo 700ms var(--ease-out) 60ms both;
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
+
+  @keyframes hero-photo {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+
+  /* Escritorio: el hero ocupa exactamente la primera pantalla bajo el encabezado.
+     La foto se limita al alto disponible y conserva su proporción (sin recortes). */
   @media (min-width: 56rem) {
     .hero {
+      --hero-pad: var(--space-xl);
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: end;
+      align-items: center;
       gap: var(--space-2xl);
-      padding-top: var(--space-2xl);
+      min-height: calc(100svh - var(--header-height));
+      padding-block: var(--hero-pad);
+    }
+
+    .hero__text {
+      align-content: center;
     }
 
     .hero__media {
       order: -1;
+      display: flex;
+      justify-content: center;
       width: 100%;
-      justify-self: stretch;
+    }
+
+    .hero__photo {
+      width: auto;
+      max-width: 100%;
+      max-height: calc(100svh - var(--header-height) - 2 * var(--hero-pad));
+      aspect-ratio: auto;
     }
   }
 </style>

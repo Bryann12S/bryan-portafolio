@@ -12,6 +12,7 @@ export const ui = {
     'nav.home': 'BSdev, ir al inicio',
     'nav.projects': 'Proyectos',
     'nav.about': 'Sobre mí',
+    'nav.skills': 'Habilidades',
     'nav.services': 'Servicios',
     'nav.contact': 'Contacto',
     'nav.openMenu': 'Abrir menú',
@@ -23,7 +24,6 @@ export const ui = {
     'footer.rights': 'Todos los derechos reservados.',
     'footer.builtWith': 'Hecho con Astro.',
 
-    'hero.label': '// fullstack developer',
     'hero.tagline': 'Desarrollo sistemas para equipos y páginas web para negocios.',
     'hero.ctaProjects': 'Ver proyectos',
     'hero.ctaWeb': 'Quiero mi web',

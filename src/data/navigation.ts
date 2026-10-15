@@ -10,6 +10,7 @@ export interface NavItem {
 export const mainNav: NavItem[] = [
   { label: 'nav.projects', href: '/#proyectos' },
   { label: 'nav.about', href: '/#sobre-mi' },
+  { label: 'nav.skills', href: '/#habilidades' },
   { label: 'nav.services', href: '/#servicios' },
   { label: 'nav.contact', href: '/#contacto' },
 ];

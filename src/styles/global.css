@@ -15,7 +15,14 @@ html {
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--header-height) + var(--space-s));
+  /* Al navegar a un ancla, el destino queda justo bajo el encabezado fijo */
+  scroll-padding-top: var(--header-height);
+}
+
+/* Las secciones tienen mucho relleno superior para separarse entre sí. Al navegar a una,
+   se compensa ese relleno para que el título quede cerca del encabezado y no tras un hueco. */
+section[id] {
+  scroll-margin-top: calc(var(--space-l) - var(--space-section));
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -178,6 +185,18 @@ textarea {
 .skip-link:focus-visible {
   transform: none;
   outline-color: var(--color-text);
+}
+
+/* Aparición de títulos al hacer scroll (ver src/scripts/reveal.ts) */
+.reveal-ready [data-reveal] {
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 600ms var(--ease-out);
+}
+
+.reveal-ready [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(1.25rem);
 }
 
 /* Movimiento reducido: se eliminan desplazamientos y animaciones */
