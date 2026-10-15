@@ -1,0 +1,138 @@
+---
+// Hero: foto, nombre como protagonista, rol, frase y dos caminos (equipos / negocios).
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import photo from '../../assets/foto-bryan.webp';
+import { site } from '../../data/site';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+---
+
+<section class="hero container" aria-labelledby="hero-title">
+  <div class="hero__text">
+    <p class="hero__label" aria-hidden="true">{t('hero.label')}</p>
+    <h1 class="hero__name" id="hero-title">
+      <span>Bryan</span>{' '}
+      <span>Shigu<span class="hero__accent">ango</span></span>
+    </h1>
+    <p class="hero__role">
+      {site.role} · {site.profession}
+      <span class="hero__location">{site.location.region}, {site.location.country}</span>
+    </p>
+    <p class="hero__tagline">{t('hero.tagline')}</p>
+    <div class="hero__actions">
+      <Button href="#proyectos">{t('hero.ctaProjects')}</Button>
+      <Button href="#servicios" variant="secondary">{t('hero.ctaWeb')}</Button>
+    </div>
+  </div>
+
+  <div class="hero__media">
+    <Image
+      class="hero__photo"
+      src={photo}
+      alt={t('hero.photoAlt')}
+      format="webp"
+      widths={[360, 540, 720, 980]}
+      quality={78}
+      sizes="(min-width: 56rem) 38vw, 80vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    gap: var(--space-xl);
+    padding-block: var(--space-xl) var(--space-section);
+  }
+
+  .hero__text {
+    /* El tamaño del nombre depende del ancho de esta columna (container query units) */
+    container-type: inline-size;
+    display: grid;
+    gap: var(--space-s);
+    align-content: end;
+  }
+
+  .hero__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--color-accent);
+  }
+
+  .hero__name {
+    /* "SHIGUANGO" mide ≈10.2× el tamaño de fuente: 9.4cqi lo mantiene dentro de la columna */
+    font-size: clamp(1.75rem, 9.4cqi, 6rem);
+    font-weight: 800;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    text-transform: uppercase;
+    hyphens: manual;
+  }
+
+  .hero__name > span {
+    display: block;
+  }
+
+  .hero__accent {
+    color: var(--color-accent);
+  }
+
+  .hero__role {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-s);
+    font-weight: 500;
+  }
+
+  .hero__location {
+    color: var(--color-text-subtle);
+    font-weight: 400;
+  }
+
+  .hero__tagline {
+    max-width: 30ch;
+    font-size: var(--text-lead);
+    color: var(--color-text-muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+
+  .hero__media {
+    /* Asimetría en móvil: la foto se desplaza a la derecha */
+    width: min(80%, 22rem);
+    justify-self: end;
+  }
+
+  .hero__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: var(--radius-m);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  @media (min-width: 56rem) {
+    .hero {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: end;
+      gap: var(--space-2xl);
+      padding-top: var(--space-2xl);
+    }
+
+    .hero__media {
+      order: -1;
+      width: 100%;
+      justify-self: stretch;
+    }
+  }
+</style>

@@ -1,10 +1,14 @@
 ---
 // Portada. Las secciones se van añadiendo por etapas:
-// Hero y Sobre mí (5), Habilidades (6), Servicios (7), Contacto (8).
+// Habilidades (6), Servicios (7), Contacto (8).
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
 import Projects from '../components/sections/Projects.astro';
+import About from '../components/sections/About.astro';
 ---
 
 <BaseLayout>
+  <Hero />
   <Projects />
+  <About />
 </BaseLayout>

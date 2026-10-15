@@ -1,0 +1,57 @@
+---
+// Botón-enlace con dos variantes. "primary" (lima) solo una vez por bloque.
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary';
+}
+
+const { href, variant = 'primary' } = Astro.props;
+---
+
+<a class:list={['button', `button--${variant}`]} href={href}><slot /></a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    min-height: 2.875rem;
+    padding: var(--space-xs) var(--space-m);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .button:active {
+    transform: scale(0.97);
+  }
+
+  .button--primary {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .button--secondary {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .button--primary:hover {
+      background-color: var(--color-accent-hover);
+      color: var(--color-on-accent);
+    }
+
+    .button--secondary:hover {
+      border-color: var(--color-text);
+      color: var(--color-text);
+    }
+  }
+</style>

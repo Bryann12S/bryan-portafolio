@@ -1,0 +1,85 @@
+---
+// Sobre mí: texto en primera persona y datos rápidos. Solo información confirmada por Bryan.
+import { site } from '../../data/site';
+import { getLang, useTranslations } from '../../i18n/ui';
+
+const t = useTranslations(getLang(Astro.currentLocale));
+const { degree, institution, year } = site.education;
+---
+
+<section class="about container" id="sobre-mi" aria-labelledby="about-title">
+  <h2 class="about__title" id="about-title">{t('about.title')}</h2>
+
+  <div class="about__body">
+    <p class="about__lead">{t('about.p1')}</p>
+    <p>{t('about.p2')}</p>
+    <p>{t('about.p3')}</p>
+  </div>
+
+  <dl class="about__facts" aria-label={t('about.facts')}>
+    <div>
+      <dt>{t('about.education')}</dt>
+      <dd>{degree}<br />{institution} · {year}</dd>
+    </div>
+    <div>
+      <dt>{t('about.location')}</dt>
+      <dd>{site.location.region}, {site.location.country}</dd>
+    </div>
+    <div>
+      <dt>{t('about.modality')}</dt>
+      <dd>{t('about.modalityValue')}</dd>
+    </div>
+  </dl>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    gap: var(--space-l);
+    padding-block: var(--space-section);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .about__body {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .about__body p {
+    color: var(--color-text-muted);
+  }
+
+  .about__body .about__lead {
+    font-size: var(--text-lead);
+    color: var(--color-text);
+  }
+
+  .about__facts {
+    display: grid;
+    gap: var(--space-m);
+    align-content: start;
+  }
+
+  .about__facts dt {
+    font-size: var(--text-small);
+    color: var(--color-text-subtle);
+  }
+
+  .about__facts dd {
+    margin: 0;
+    font-size: var(--text-small);
+  }
+
+  /* Escritorio: título a la izquierda, texto al centro, datos a la derecha */
+  @media (min-width: 56rem) {
+    .about {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr);
+      gap: var(--space-2xl);
+    }
+
+    .about__facts {
+      padding-left: var(--space-l);
+      border-left: var(--border-width) solid var(--color-border);
+    }
+  }
+</style>

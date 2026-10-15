@@ -17,6 +17,11 @@ export const site = {
   profession: 'Ingeniero de software',
   description:
     'Portafolio de Bryan Shiguango, desarrollador fullstack e ingeniero de software en Napo, Ecuador. Proyectos, demos y desarrollo de páginas web para negocios.',
+  education: {
+    degree: 'Ingeniería de Software',
+    institution: 'Universidad Estatal de Bolívar',
+    year: 2024,
+  },
   location: {
     region: 'Napo',
     country: 'Ecuador',

@@ -23,6 +23,26 @@ export const ui = {
     'footer.rights': 'Todos los derechos reservados.',
     'footer.builtWith': 'Hecho con Astro.',
 
+    'hero.label': '// fullstack developer',
+    'hero.tagline': 'Desarrollo sistemas para equipos y páginas web para negocios.',
+    'hero.ctaProjects': 'Ver proyectos',
+    'hero.ctaWeb': 'Quiero mi web',
+    'hero.photoAlt': 'Retrato de Bryan Shiguango',
+
+    'about.title': 'Sobre mí',
+    'about.p1':
+      'Soy ingeniero de software: terminé la carrera en la Universidad Estatal de Bolívar en 2024. Vivo en Napo, Ecuador.',
+    'about.p2':
+      'Trabajé como desarrollador de aplicaciones en la Secretaría de Educación Intercultural Bilingüe, donde mantuve y mejoré KIPUJEA, la plataforma que usan docentes y rectores, con Angular, Spring Boot y Electron. Antes, como proyecto de tesis, desarrollé la plataforma de comercio electrónico de la Asociación ASOTAECO con Laravel y MySQL.',
+    'about.p3':
+      'Hoy trabajo en dos frentes: busco sumarme a equipos de desarrollo y creo páginas web para pequeños negocios y profesionales.',
+    'about.facts': 'Datos rápidos',
+    'about.education': 'Formación',
+    'about.location': 'Ubicación',
+    'about.modality': 'Modalidad',
+    'about.modalityValue':
+      'Presencial en Napo, Pastaza, Orellana y Quito. Remoto para el resto del país y el exterior.',
+
     'projects.title': 'Proyectos',
     'projects.intro':
       'Trabajo real para instituciones y organizaciones, junto con demos que uso para practicar y explorar tecnologías. Cada uno indica claramente qué es.',
